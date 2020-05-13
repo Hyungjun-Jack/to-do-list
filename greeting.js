@@ -23,7 +23,7 @@ function askForName() {
 
 function paintGreeting(text) {
   form.classList.remove(SHOWING_CN);
-  greeting.classList.add(SHOWING_CN);
+  document.querySelector(".js-toDoForm").classList.add(SHOWING_CN);
   greeting.innerText = `안녕하세요. ${text}님!`;
 }
 

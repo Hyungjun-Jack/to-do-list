@@ -9,13 +9,18 @@
 
   <body>
     <div class="js-clock">
-      <h1>00:00</h1>
+      <div id="clock">00:00</div>
     </div>
     <form class="js-form form">
-      <input type="text" placeholder="반갑습니다. 이름을 입력해주세요!" />
+      <input class="todo-input" type="text" placeholder="반갑습니다. 이름을 입력해주세요!" />
     </form>
     <h4 class="js-greetings greetings"></h4>
+    <form class="js-toDoForm form">
+      <input class="todo-input" type="text" placeholder="해야할 일을 등록하세요." />
+    </form>
+    <div class="js-toDoList"></div>
     <script src="clock.js"></script>
     <script src="greeting.js"></script>
+    <script src="todo.js"></script>
   </body>
 </html>
