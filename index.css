@@ -52,12 +52,25 @@ svg {
   margin: 0;
 }
 
+.write-btn {
+  color: rgba(189, 27, 167, 0.89);
+  margin-left: auto;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+}
+
 .todo-input {
   font-size: 16px;
   font-weight: 600;
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
+  outline: none;
 }
 
 .clicked {
@@ -71,6 +84,10 @@ svg {
 
 .showing {
   display: block;
+}
+
+.hide {
+  display: none;
 }
 
 .js-clock {
