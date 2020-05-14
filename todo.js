@@ -10,23 +10,27 @@ function saveToDos() {
   localStorage.setItem(TODOS_LS, JSON.stringify(toDos));
 }
 
-function deleteToDo(li) {
+function deleteToDo(container) {
   // const btn = event.target;
   // const li = btn.parentNode.parentNode;
-  const delId = li.id;
-  toDoList.removeChild(li);
+  const delObj = container.obj;
+
+  // console.log(delObj);
+
+  toDoList.removeChild(container);
 
   const cleanToDos = toDos.filter(function (toDo) {
-    return toDo.id !== parseInt(delId);
+    return toDo.id !== delObj.id && toDo.text !== delObj.text;
   });
 
   toDos = cleanToDos;
   saveToDos();
 }
 
-function makeCard(text, id) {
+function makeCard(obj) {
   const container = document.createElement("div");
-  container.id = id;
+  container.id = obj.id;
+  container.obj = obj;
   container.className = "container";
 
   const delBtn = document.createElement("button");
@@ -36,7 +40,7 @@ function makeCard(text, id) {
     <path d="M23 20.168l-8.185-8.187 8.185-8.174-2.832-2.807-8.182 8.179-8.176-8.179-2.81 2.81 8.186 8.196-8.186 8.184 2.81 2.81 8.203-8.192 8.18 8.192z"/> \
     </svg>';
   const div = document.createElement("div");
-  div.innerHTML = text;
+  div.innerHTML = obj.text;
   div.id = "todo-text";
   div.style.display = "flex";
 
@@ -48,7 +52,8 @@ function makeCard(text, id) {
 
   const todoInput = document.createElement("input");
   todoInput.id = "todo-input";
-  todoInput.value = text;
+  todoInput.type = "text";
+  todoInput.value = obj.text;
   todoInput.className = "todo-input";
   divInput.appendChild(todoInput);
 
@@ -88,27 +93,29 @@ function makeCard(text, id) {
       divInput.style.display = "none";
       divText.style.display = "flex";
       divText.innerHTML = todoInput.value;
-      updateToDo(id, todoInput.value);
+      updateToDo(container, todoInput.value);
     }
   });
 
   return container;
 }
 
-function updateToDo(id, text) {
-  console.log(id, text);
-
-  const found = toDos.find((todo) => todo.id === id);
+function updateToDo(container, text) {
+  const found = toDos.find((todo) => todo.text === container.obj.text && todo.id === container.obj.id);
 
   if (found) {
     found.text = text;
+    container.obj = found;
     saveToDos();
   }
 }
 
 function paintToDo(text) {
   const newId = toDos.length + 1;
-  const card = makeCard(text, newId);
+  const card = makeCard({
+    text: text,
+    id: newId,
+  });
   toDoList.appendChild(card);
 
   const toToObj = {
@@ -116,7 +123,6 @@ function paintToDo(text) {
     id: newId,
   };
   toDos.push(toToObj);
-  saveToDos();
 }
 
 function handleSubmit(event) {
@@ -124,6 +130,7 @@ function handleSubmit(event) {
   const currentValue = toDoInput.value;
   paintToDo(currentValue);
   toDoInput.value = "";
+  saveToDos();
 }
 
 function loadToDos() {
@@ -142,3 +149,17 @@ function init() {
 }
 
 init();
+
+// Simple list
+Sortable.create(simpleList, {
+  /* options */
+  // Called by any change to the list (add / update / remove)
+  onSort: function (/**Event*/ evt) {
+    // same properties as onEnd
+    const containers = toDoList.querySelectorAll(".container");
+
+    toDos = [];
+    containers.forEach((container) => toDos.push(container.obj));
+    saveToDos();
+  },
+});
