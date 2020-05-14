@@ -81,7 +81,7 @@ function makeCard(obj) {
     }
   });
 
-  writeBtn.addEventListener("click", (event) => {
+  const handleModify = () => {
     const divText = container.querySelector("#todo-text");
     const divInput = container.querySelector("#todo-input-div");
     const todoInput = container.querySelector("#todo-input");
@@ -94,6 +94,16 @@ function makeCard(obj) {
       divText.style.display = "flex";
       divText.innerHTML = todoInput.value;
       updateToDo(container, todoInput.value);
+    }
+  };
+
+  writeBtn.addEventListener("click", (event) => {
+    handleModify();
+  });
+
+  todoInput.addEventListener("keydown", (event) => {
+    if (event.keyCode == 13) {
+      handleModify();
     }
   });
 
