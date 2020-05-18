@@ -161,7 +161,7 @@ function init() {
 init();
 
 // Simple list
-Sortable.create(simpleList, {
+let sortable = Sortable.create(simpleList, {
   /* options */
   // Called by any change to the list (add / update / remove)
   onSort: function (/**Event*/ evt) {
@@ -172,4 +172,12 @@ Sortable.create(simpleList, {
     containers.forEach((container) => toDos.push(container.obj));
     saveToDos();
   },
+});
+
+let sortDisabled = true;
+sortable.option("disabled", true); // set
+
+document.getElementById("sort").addEventListener("click", () => {
+  sortDisabled = !sortDisabled;
+  sortable.option("disabled", sortDisabled); // set
 });
