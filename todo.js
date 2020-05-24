@@ -27,6 +27,14 @@ function deleteToDo(container) {
   saveToDos();
 }
 
+const writeSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"> \
+<path d="M9.963 8.261c-.566-.585-.536-1.503.047-2.07l5.948-5.768c.291-.281.664-.423 1.035-.423.376 0 .75.146 1.035.44l-8.065 7.821zm-9.778 14.696c-.123.118-.185.277-.185.436 0 .333.271.607.607.607.152 0 .305-.057.423-.171l.999-.972-.845-.872-.999.972zm8.44-11.234l-3.419 3.314c-1.837 1.781-2.774 3.507-3.64 5.916l1.509 1.559c2.434-.79 4.187-1.673 6.024-3.455l3.418-3.315-3.892-4.019zm9.97-10.212l-8.806 8.54 4.436 4.579 8.806-8.538c.645-.626.969-1.458.969-2.291 0-2.784-3.373-4.261-5.405-2.29z"/> \
+</svg>'
+
+const listSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"> \
+<path d="M4 22h-4v-4h4v4zm0-12h-4v4h4v-4zm0-8h-4v4h4v-4zm3 0v4h17v-4h-17zm0 12h17v-4h-17v4zm0 8h17v-4h-17v4z"/> \
+</svg>'
+
 function makeCard(obj) {
   const container = document.createElement("div");
   container.id = obj.id;
@@ -59,10 +67,7 @@ function makeCard(obj) {
 
   const writeBtn = document.createElement("button");
   writeBtn.className = "write-btn";
-  writeBtn.innerHTML =
-    '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"> \
-    <path d="M9.963 8.261c-.566-.585-.536-1.503.047-2.07l5.948-5.768c.291-.281.664-.423 1.035-.423.376 0 .75.146 1.035.44l-8.065 7.821zm-9.778 14.696c-.123.118-.185.277-.185.436 0 .333.271.607.607.607.152 0 .305-.057.423-.171l.999-.972-.845-.872-.999.972zm8.44-11.234l-3.419 3.314c-1.837 1.781-2.774 3.507-3.64 5.916l1.509 1.559c2.434-.79 4.187-1.673 6.024-3.455l3.418-3.315-3.892-4.019zm9.97-10.212l-8.806 8.54 4.436 4.579 8.806-8.538c.645-.626.969-1.458.969-2.291 0-2.784-3.373-4.261-5.405-2.29z"/> \
-    </svg>';
+  writeBtn.innerHTML = writeSvg;
 
   container.appendChild(delBtn);
   container.appendChild(div);
@@ -106,6 +111,22 @@ function makeCard(obj) {
       handleModify();
     }
   });
+
+  let _touchTimer = null;
+  container.addEventListener("touchstart", event => {
+    _touchTimer = setTimeout(() => {
+      writeBtn.disabled = true;
+      writeBtn.innerHTML = listSvg;
+    }, 1000)
+  })
+
+  container.addEventListener("touchend", event => {
+    if (_touchTimer !== null) {
+      writeBtn.innerHTML = writeSvg;
+      writeBtn.disabled = false;
+      clearTimeout(_touchTimer);
+    }
+  })
 
   return container;
 }
@@ -164,6 +185,7 @@ init();
 let sortable = Sortable.create(simpleList, {
   /* options */
   // Called by any change to the list (add / update / remove)
+  delay:1000,
   onSort: function (/**Event*/ evt) {
     // same properties as onEnd
     const containers = toDoList.querySelectorAll(".container");
@@ -174,10 +196,10 @@ let sortable = Sortable.create(simpleList, {
   },
 });
 
-let sortDisabled = true;
-sortable.option("disabled", true); // set
+// let sortDisabled = true;
+// sortable.option("disabled", true); // set
 
-document.getElementById("sort").addEventListener("click", () => {
-  sortDisabled = !sortDisabled;
-  sortable.option("disabled", sortDisabled); // set
-});
+// document.getElementById("sort").addEventListener("click", () => {
+//   sortDisabled = !sortDisabled;
+//   sortable.option("disabled", sortDisabled); // set
+// });
