@@ -118,7 +118,7 @@ function makeCard(obj) {
     _touchTimer = setTimeout(() => {
       writeBtn.disabled = true;
       writeBtn.innerHTML = listSvg;
-    }, 1000)
+    }, 500)
   })
 
   container.addEventListener("touchend", event => {
@@ -186,7 +186,7 @@ init();
 let sortable = Sortable.create(simpleList, {
   /* options */
   // Called by any change to the list (add / update / remove)
-  delay:1000,
+  delay:500,
   onSort: function (/**Event*/ evt) {
     // same properties as onEnd
     const containers = toDoList.querySelectorAll(".container");
