@@ -48,9 +48,10 @@ function makeCard(obj) {
     <path d="M23 20.168l-8.185-8.187 8.185-8.174-2.832-2.807-8.182 8.179-8.176-8.179-2.81 2.81 8.186 8.196-8.186 8.184 2.81 2.81 8.203-8.192 8.18 8.192z"/> \
     </svg>';
   const div = document.createElement("div");
-  div.innerHTML = obj.text;
+  div.innerHTML = `&nbsp;${obj.text}`;
   div.id = "todo-text";
   div.style.display = "flex";
+  div.style.flex = 1;
 
   const divInput = document.createElement("div");
   divInput.id = "todo-input-div";
@@ -113,15 +114,18 @@ function makeCard(obj) {
   });
 
   let _touchTimer = null;
-  container.addEventListener("touchstart", event => {
+  div.addEventListener("touchstart", event => {
+    console.log(writeBtn)
     event.preventDefault();
+    console.log(writeBtn)
     _touchTimer = setTimeout(() => {
+      console.log(writeBtn)
       writeBtn.disabled = true;
       writeBtn.innerHTML = listSvg;
     }, 500)
   })
 
-  container.addEventListener("touchend", event => {
+  div.addEventListener("touchend", event => {
     if (_touchTimer !== null) {
       writeBtn.innerHTML = writeSvg;
       writeBtn.disabled = false;
@@ -186,7 +190,7 @@ init();
 let sortable = Sortable.create(simpleList, {
   /* options */
   // Called by any change to the list (add / update / remove)
-  delay:500,
+  delay:450,
   onSort: function (/**Event*/ evt) {
     // same properties as onEnd
     const containers = toDoList.querySelectorAll(".container");
