@@ -114,6 +114,7 @@ function makeCard(obj) {
 
   let _touchTimer = null;
   container.addEventListener("touchstart", event => {
+    event.preventDefault();
     _touchTimer = setTimeout(() => {
       writeBtn.disabled = true;
       writeBtn.innerHTML = listSvg;
